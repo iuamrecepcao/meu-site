@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IUAM - Agendas Fechadas</title>
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7f8;
+    color: #26363b;
+}
+
+header {
+    background: #0f6075;
+    color: white;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+main {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+h2 {
+    color: #0f6075;
+    margin-top: 0;
+}
+
+.formulario {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccd7da;
+    border-radius: 7px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+button {
+    background: #0f6075;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #0b4d5e;
+}
+
+.agenda {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.agenda:last-child {
+    border-bottom: none;
+}
+
+.nome {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.periodo {
+    color: #66777d;
+    margin-top: 5px;
+}
+
+.excluir {
+    background: #b42318;
+    margin: 0;
+}
+
+.vazio {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+
+@media (max-width: 650px) {
+
+    .formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .agenda {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .excluir {
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>IUAM - Agendas Fechadas</h1>
+
+</header>
+
+
+<main>
+
+
+<!-- CADASTRO -->
+
+<div class="card">
+
+<h2>Adicionar agenda fechada</h2>
+
+<div class="formulario">
+
+<div>
+
+<label>Nome do médico</label>
+
+<input
+    type="text"
+    id="medico"
+    placeholder="Ex.: Dr. Vitor Montenegro"
+>
+
+</div>
+
+
+<div>
+
+<label>Data inicial</label>
+
+<input
+    type="date"
+    id="inicio"
+>
+
+</div>
+
+
+<div>
+
+<label>Data final</label>
+
+<input
+    type="date"
+    id="fim"
+>
+
+</div>
+
+</div>
+
+
+<button onclick="adicionarAgenda()">
+Adicionar
+</button>
+
+</div>
+
+
+
+<!-- LISTA -->
+
+<div class="card">
+
+<h2>Agendas fechadas</h2>
+
+<div id="lista"></div>
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+let agendas = JSON.parse(
+    localStorage.getItem("iuam_agendas")
+) || [];
+
+
+
+function adicionarAgenda() {
+
+    const medico =
+        document.getElementById("medico").value.trim();
+
+    const inicio =
+        document.getElementById("inicio").value;
+
+    const fim =
+        document.getElementById("fim").value;
+
+
+    if (!medico || !inicio || !fim) {
+
+        alert("Preencha os três campos.");
+
+        return;
+    }
+
+
+    if (fim < inicio) {
+
+        alert(
+            "A data final não pode ser anterior à data inicial."
+        );
+
+        return;
+    }
+
+
+    agendas.push({
+
+        medico: medico,
+
+        inicio: inicio,
+
+        fim: fim
+
+    });
+
+
+    salvar();
+
+    limparFormulario();
+
+    mostrarAgendas();
+
+}
+
+
+
+function salvar() {
+
+    localStorage.setItem(
+        "iuam_agendas",
+        JSON.stringify(agendas)
+    );
+
+}
+
+
+
+function excluirAgenda(indice) {
+
+    if (
+        confirm(
+            "Deseja excluir esta agenda?"
+        )
+    ) {
+
+        agendas.splice(indice, 1);
+
+        salvar();
+
+        mostrarAgendas();
+
+    }
+
+}
+
+
+
+function formatarData(data) {
+
+    const partes = data.split("-");
+
+    return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+    );
+
+}
+
+
+
+function limparFormulario() {
+
+    document.getElementById("medico").value = "";
+
+    document.getElementById("inicio").value = "";
+
+    document.getElementById("fim").value = "";
+
+}
+
+
+
+function mostrarAgendas() {
+
+    const lista =
+        document.getElementById("lista");
+
+
+    if (agendas.length === 0) {
+
+        lista.innerHTML = `
+            <div class="vazio">
+                Nenhuma agenda fechada cadastrada.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    lista.innerHTML = "";
+
+
+    agendas.forEach(function(agenda, indice) {
+
+        lista.innerHTML += `
+
+            <div class="agenda">
+
+                <div>
+
+                    <div class="nome">
+                        ${agenda.medico}
+                    </div>
+
+                    <div class="periodo">
+                        📅 ${formatarData(agenda.inicio)}
+                        até
+                        ${formatarData(agenda.fim)}
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="excluir"
+                    onclick="excluirAgenda(${indice})"
+                >
+                    Excluir
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+
+mostrarAgendas();
+
+</script>
+
+
+</body>
+</html>
