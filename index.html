@@ -1,0 +1,830 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IUAM | Painel de Avisos</title>
+
+
+<style>
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+:root{
+
+  --teal:#0f6075;
+  --teal-dark:#0a4b5b;
+
+  --bg:#eef4f6;
+
+  --text:#18343d;
+  --muted:#6b7b82;
+
+  --border:#dbe5e8;
+
+  --white:#ffffff;
+
+}
+
+
+/* =====================================================
+   CONFIGURAÇÕES GERAIS
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+
+body{
+
+  margin:0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+}
+
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.header{
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--teal-dark),
+      var(--teal)
+    );
+
+  color:white;
+
+  padding:30px 20px 26px;
+
+  box-shadow:
+    0 3px 14px #0002;
+
+}
+
+
+.header-inner{
+
+  max-width:980px;
+
+  margin:auto;
+
+}
+
+
+.logo{
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:2px;
+
+  opacity:.85;
+
+  margin-bottom:8px;
+
+}
+
+
+.header h1{
+
+  margin:0;
+
+  font-size:30px;
+
+  font-weight:700;
+
+}
+
+
+.header p{
+
+  margin:8px 0 0;
+
+  opacity:.88;
+
+  font-size:15px;
+
+}
+
+
+/* =====================================================
+   CONTAINER PRINCIPAL
+===================================================== */
+
+.container{
+
+  max-width:980px;
+
+  margin:30px auto;
+
+  padding:0 18px;
+
+}
+
+
+/* =====================================================
+   TÍTULO DOS AVISOS
+===================================================== */
+
+.topline{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:15px;
+
+  margin-bottom:18px;
+
+}
+
+
+.topline h2{
+
+  margin:0;
+
+  font-size:20px;
+
+}
+
+
+.updated{
+
+  font-size:13px;
+
+  color:var(--muted);
+
+}
+
+
+/* =====================================================
+   CARD DO AVISO
+===================================================== */
+
+.notice{
+
+  background:var(--white);
+
+  border:1px solid var(--border);
+
+  border-radius:14px;
+
+  margin:0 0 16px;
+
+  padding:20px;
+
+  box-shadow:
+    0 3px 12px #0000000c;
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+
+/* Barra lateral */
+
+.notice::before{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+
+  top:0;
+
+  bottom:0;
+
+  width:5px;
+
+  background:var(--teal);
+
+}
+
+
+/* =====================================================
+   CABEÇALHO DO AVISO
+===================================================== */
+
+.notice-head{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:15px;
+
+  align-items:flex-start;
+
+}
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+.date{
+
+  color:var(--teal);
+
+  font-weight:bold;
+
+  font-size:14px;
+
+}
+
+
+/* =====================================================
+   MÉDICO
+===================================================== */
+
+.notice h3{
+
+  margin:7px 0 4px;
+
+  font-size:20px;
+
+  font-weight:700;
+
+}
+
+
+/* =====================================================
+   HORÁRIO
+===================================================== */
+
+.time{
+
+  font-weight:bold;
+
+  background:#e9f3f5;
+
+  color:var(--teal-dark);
+
+  padding:7px 11px;
+
+  border-radius:8px;
+
+  white-space:nowrap;
+
+}
+
+
+/* =====================================================
+   MENSAGEM
+===================================================== */
+
+.message{
+
+  margin-top:14px;
+
+  line-height:1.55;
+
+  font-size:15px;
+
+  color:#31484f;
+
+}
+
+
+/* =====================================================
+   QUANDO NÃO EXISTIREM AVISOS
+===================================================== */
+
+.empty{
+
+  background:white;
+
+  border:1px dashed #bfd0d5;
+
+  border-radius:14px;
+
+  padding:45px 20px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+}
+
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+
+.footer{
+
+  text-align:center;
+
+  padding:25px 15px 35px;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+}
+
+
+/* =====================================================
+   RESPONSIVO — CELULAR
+===================================================== */
+
+@media(max-width:600px){
+
+  .header h1{
+
+    font-size:25px;
+
+  }
+
+
+  .topline{
+
+    display:block;
+
+  }
+
+
+  .updated{
+
+    margin-top:6px;
+
+  }
+
+
+  .notice-head{
+
+    display:block;
+
+  }
+
+
+  .time{
+
+    display:inline-block;
+
+    margin-top:10px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     CABEÇALHO
+===================================================== -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <div class="logo">
+      IUAM
+    </div>
+
+    <h1>
+      Painel de Avisos
+    </h1>
+
+    <p>
+      Informações e alterações de agenda
+    </p>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTEÚDO PRINCIPAL
+===================================================== -->
+
+<main class="container">
+
+
+  <div class="topline">
+
+    <h2>
+      Avisos recentes
+    </h2>
+
+    <div
+      class="updated"
+      id="ultimaAtualizacao">
+    </div>
+
+  </div>
+
+
+  <!-- Os avisos serão inseridos aqui -->
+
+  <section id="avisos"></section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     RODAPÉ
+===================================================== -->
+
+<footer class="footer">
+
+  Instituto de Urologia · Painel informativo
+
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   AVISOS
+
+   EDITE SOMENTE ESTA PARTE.
+
+   CAMPOS DISPONÍVEIS:
+
+   data
+   medico
+   horario
+   mensagem
+
+   "horario" é opcional.
+   "mensagem" é opcional.
+
+===================================================== */
+
+
+const avisos = [
+
+  {
+    data: "01 e 08 de Ou",
+    medico: "Dr. Igor Ferreira"
+  }
+
+];
+
+
+
+/* =====================================================
+   FUNÇÃO PARA EVITAR "undefined"
+
+   Qualquer campo inexistente será convertido
+   automaticamente em texto vazio.
+
+===================================================== */
+
+function valorSeguro(valor){
+
+  if(
+    valor === undefined ||
+    valor === null
+  ){
+
+    return "";
+
+  }
+
+  return String(valor).trim();
+
+}
+
+
+
+/* =====================================================
+   PROTEÇÃO CONTRA HTML
+
+===================================================== */
+
+function escapeHTML(texto){
+
+  texto = valorSeguro(texto);
+
+  return texto.replace(
+    /[&<>"']/g,
+
+    function(caractere){
+
+      const caracteres = {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+
+      };
+
+      return caracteres[caractere];
+
+    }
+
+  );
+
+}
+
+
+
+/* =====================================================
+   GERAR AVISOS
+===================================================== */
+
+function mostrarAvisos(){
+
+
+  /* Área onde os avisos serão exibidos */
+
+  const area =
+    document.getElementById("avisos");
+
+
+  /* Área da última atualização */
+
+  const ultimaAtualizacao =
+    document.getElementById(
+      "ultimaAtualizacao"
+    );
+
+
+  /* ===================================================
+     VERIFICAR SE EXISTEM AVISOS
+  =================================================== */
+
+  if(
+    !Array.isArray(avisos) ||
+    avisos.length === 0
+  ){
+
+    area.innerHTML = `
+
+      <div class="empty">
+
+        Não há avisos no momento.
+
+      </div>
+
+    `;
+
+
+    ultimaAtualizacao.textContent =
+      "Última atualização: " +
+      new Date().toLocaleDateString(
+        "pt-BR"
+      );
+
+
+    return;
+
+  }
+
+
+
+  /* ===================================================
+     GERAR CADA AVISO
+  =================================================== */
+
+  area.innerHTML = avisos.map(
+    function(aviso){
+
+      /* -----------------------------------------------
+         Garantir que o objeto exista
+      ------------------------------------------------ */
+
+      aviso = aviso || {};
+
+
+
+      /* -----------------------------------------------
+         DATA
+      ------------------------------------------------ */
+
+      const data =
+        valorSeguro(aviso.data);
+
+
+
+      /* -----------------------------------------------
+         MÉDICO
+      ------------------------------------------------ */
+
+      const medico =
+        valorSeguro(aviso.medico);
+
+
+
+      /* -----------------------------------------------
+         HORÁRIO
+         
+         Só será exibido se estiver preenchido.
+      ------------------------------------------------ */
+
+      const horario =
+        valorSeguro(aviso.horario);
+
+
+
+      /* -----------------------------------------------
+         MENSAGEM
+
+         Só será exibida se estiver preenchida.
+      ------------------------------------------------ */
+
+      const mensagem =
+        valorSeguro(aviso.mensagem);
+
+
+
+      /* -----------------------------------------------
+         HTML DA DATA
+      ------------------------------------------------ */
+
+      let dataHTML = "";
+
+
+      if(data !== ""){
+
+        dataHTML = `
+
+          <div class="date">
+
+            📅 ${escapeHTML(data)}
+
+          </div>
+
+        `;
+
+      }
+
+
+
+      /* -----------------------------------------------
+         HTML DO MÉDICO
+      ------------------------------------------------ */
+
+      let medicoHTML = "";
+
+
+      if(medico !== ""){
+
+        medicoHTML = `
+
+          <h3>
+
+            ${escapeHTML(medico)}
+
+          </h3>
+
+        `;
+
+      }
+
+
+
+      /* -----------------------------------------------
+         HTML DO HORÁRIO
+      ------------------------------------------------ */
+
+      let horarioHTML = "";
+
+
+      if(horario !== ""){
+
+        horarioHTML = `
+
+          <div class="time">
+
+            🕐 ${escapeHTML(horario)}
+
+          </div>
+
+        `;
+
+      }
+
+
+
+      /* -----------------------------------------------
+         HTML DA MENSAGEM
+      ------------------------------------------------ */
+
+      let mensagemHTML = "";
+
+
+      if(mensagem !== ""){
+
+        mensagemHTML = `
+
+          <div class="message">
+
+            ${escapeHTML(mensagem)}
+
+          </div>
+
+        `;
+
+      }
+
+
+
+      /* -----------------------------------------------
+         RETORNAR CARD COMPLETO
+      ------------------------------------------------ */
+
+      return `
+
+        <article class="notice">
+
+
+          <div class="notice-head">
+
+
+            <div>
+
+              ${dataHTML}
+
+              ${medicoHTML}
+
+            </div>
+
+
+            ${horarioHTML}
+
+
+          </div>
+
+
+          ${mensagemHTML}
+
+
+        </article>
+
+      `;
+
+    }
+
+  ).join("");
+
+
+
+  /* ===================================================
+     DATA DA ÚLTIMA ATUALIZAÇÃO
+  =================================================== */
+
+  ultimaAtualizacao.textContent =
+    "Última atualização: " +
+    new Date().toLocaleDateString(
+      "pt-BR"
+    );
+
+}
+
+
+
+/* =====================================================
+   INICIAR PAINEL
+===================================================== */
+
+mostrarAvisos();
+
+</script>
+
+
+</body>
+
+</html>
+```
